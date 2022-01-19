@@ -109,8 +109,8 @@ reg [1:0] count1;//这个计数器用于数到3，因为第一层的输入有三个通道
 reg [3:0] count2;//这个计数器用于数到9，以为每个滑窗有9个数
 reg [3:0] count3;//这个计数器用于数到16，因为一共有八个计算核，128/8=16，计算十六次将每一个通道的第一个数算出
 reg [3:0] count4;//用于计数到8，从bn sram中取八个数
-reg signed [10:0] pre_addr_buffer;//输出到前一级的读地址信号，多了一位符号位
-reg signed [10:0] pre_addr_buffer1;//用于打一拍，对应的数据和地址差一个周期
+reg signed [11:0] pre_addr_buffer;//输出到前一级的读地址信号，多了一位符号位
+reg signed [11:0] pre_addr_buffer1;//用于打一拍，对应的数据和地址差一个周期
 reg [7:0] asm_send1;
 reg [7:0] asm_send2;//用于打两拍的寄存器
 reg [7:0] asm_send3;
