@@ -21,7 +21,7 @@
 
 
 module sram
-#(parameter DW = 8,AW = 4)
+#(parameter DW = 8,AW = 14)
 (
     input [AW-1:0]a,//address
     input clk,
