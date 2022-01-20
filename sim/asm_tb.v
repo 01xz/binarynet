@@ -31,9 +31,14 @@ module asm_tb;
 
   initial begin
     repeat (1) @(posedge clk);
-      rst_n <= 1;
-    repeat (500) @(posedge clk);
+      rst_n <= 10;
+    repeat (5000) @(posedge clk);
       $finish;
+  end
+
+  initial begin
+    $dumpfile("asm_tb.vcd");
+    $dumpvars(0, asm_tb);
   end
 
   ASM #(
