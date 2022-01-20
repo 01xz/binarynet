@@ -22,16 +22,16 @@
 
 module ASM(
      //INPUT
-     data_pix,//è¾“å…¥çš„åƒç´ å€¼
-     data_weights,//è¾“å…¥çš„æƒé‡å€¼
-     data_bn,//è¾“å…¥bnç³»æ•°
-     asm_send,//æ§åˆ¶è®¡ç®—å¥½çš„å€¼è¾“å…¥åˆ°ä¸‹ä¸€çº§çš„sramä¸­å»
-     asm_reception,//æ§åˆ¶æ¥å—bnçš„å€¼
+     data_pix,//ÊäÈëµÄÏñËØÖµ
+     data_weights,//ÊäÈëµÄÈ¨ÖØÖµ
+     data_bn,//ÊäÈëbnÏµÊı
+     asm_send,//¿ØÖÆ¼ÆËãºÃµÄÖµÊäÈëµ½ÏÂÒ»¼¶µÄsramÖĞÈ¥
+     asm_reception,//¿ØÖÆ½ÓÊÜbnµÄÖµ
      clk,
      rst,
-     calculate_en,//çŠ¶æ€æœºçš„è®¡ç®—ä½¿èƒ½
+     calculate_en,//×´Ì¬»úµÄ¼ÆËãÊ¹ÄÜ
      //OUTPUT
-     data_out//è¾“å‡ºçš„ä¸‹ä¸€çº§çš„ç‰¹å¾å›¾çš„å€¼
+     data_out//Êä³öµÄÏÂÒ»¼¶µÄÌØÕ÷Í¼µÄÖµ
     );
  //*******************
 //DEFINE PARAMETER
@@ -41,7 +41,7 @@ module ASM(
 parameter img_width = 16;
 parameter bn_width = 16;
 parameter IDLE = 5'b00001,CALCULATE = 5'b00010;
-parameter result_width = 6;
+parameter result_width = 22;
 
 //*******************
 //DEFINE INPUT
@@ -62,14 +62,14 @@ output data_out;
 //INNER SIGNAL DECLARATION
 //*********************
 //REGS
-reg [4:0] state;//5ä½çš„çŠ¶æ€æœºä¿¡å·
+reg [4:0] state;//5Î»µÄ×´Ì¬»úĞÅºÅ
 reg [4:0] nextstate;
-reg pingpong_flag;//äº¤æ›¿è¿ç®—çš„æ ‡å¿—
+reg pingpong_flag;//½»ÌæÔËËãµÄ±êÖ¾
 reg signed [bn_width-1:0] bn_coefficient;
 reg signed [result_width-1:0] result1,result2;
 
 //WIRES
-wire [result_width-1:0] result; 
+wire signed [16:0] result; 
 
  always@(posedge clk or negedge rst)
  begin//xxxx
