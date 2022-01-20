@@ -42,7 +42,7 @@ data_out
     );
  parameter img_width = 16;
  parameter bn_width = 16;
- parameter asm_number = 8; //×´Ì¬»úµÄÊıÁ¿   
+ parameter asm_number = 8; //çŠ¶æ€æœºçš„æ•°é‡   
     
 input data_weight1,data_weight2,data_weight3,data_weight4,data_weight5,data_weight6,data_weight7,data_weight8;
 input [img_width-1:0] data_pix;
@@ -54,7 +54,7 @@ input calculate_en;
 output [asm_number-1:0] data_out;
 
 //wire data_out1,data_out2,data_out3,data_out4,data_out5,data_out6,data_out7,data_out8;
-//µÚÒ»¸öÊı±»´æµ½×îµÍÎ»
+//ç¬¬ä¸€ä¸ªæ•°è¢«å­˜åˆ°æœ€ä½ä½
 ASM U_ASM1(
      //INPUT
      .data_pix(data_pix),

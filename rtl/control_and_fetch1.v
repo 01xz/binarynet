@@ -24,43 +24,43 @@ module CONTROL_AND_FETCH1(
          //INPUT
          clk,
          rst,
-         din,//´ÓsramÖĞ¶ÁÈ¡µÄÊı¾İ
-         pre_sram_full1,//Ç°Ò»¼¶sramÔØÈëÍê³ÉĞÅºÅ
+         din,//ä»sramä¸­è¯»å–çš„æ•°æ®
+         pre_sram_full1,//å‰ä¸€çº§sramè½½å…¥å®Œæˆä¿¡å·
          pre_sram_full2,
          next_sram_empty1,
-         next_sram_empty2,//ºóÒ»¼¶µÄsram¼ÆËãÍê³ÉÎª¿ÕµÄÊ±ºò£¬ÒòÎªºóÃæÓĞ2Æ¬sram·ÖÊ±¸´ÓÃ£¬ËùÒÔÓĞÁ½¸ö
+         next_sram_empty2,//åä¸€çº§çš„sramè®¡ç®—å®Œæˆä¸ºç©ºçš„æ—¶å€™ï¼Œå› ä¸ºåé¢æœ‰2ç‰‡sramåˆ†æ—¶å¤ç”¨ï¼Œæ‰€ä»¥æœ‰ä¸¤ä¸ª
          //OUTPUT
-         dout,//½«¶ÁÈ¡µ½µÄÊı¾İÊä³öµ½¶à¸ö×´Ì¬»úÖ®ÖĞ
-         pre_addr,//Êä³öµ½Ç°Ò»¼¶µÄ¶ÁµØÖ·ĞÅºÅ
-         pre_sram_en1,//Ç°Ò»¼¶Æ¬Ñ¡,ÎªÁãÊ±ÓĞĞ§
+         dout,//å°†è¯»å–åˆ°çš„æ•°æ®è¾“å‡ºåˆ°å¤šä¸ªçŠ¶æ€æœºä¹‹ä¸­
+         pre_addr,//è¾“å‡ºåˆ°å‰ä¸€çº§çš„è¯»åœ°å€ä¿¡å·
+         pre_sram_en1,//å‰ä¸€çº§ç‰‡é€‰,ä¸ºé›¶æ—¶æœ‰æ•ˆ
          pre_sram_en2,
-         pre_rd1,//Ç°Ò»¼¶¶ÁÊ¹ÄÜ£¬ÎªÁãÊ±ÓĞĞ§
+         pre_rd1,//å‰ä¸€çº§è¯»ä½¿èƒ½ï¼Œä¸ºé›¶æ—¶æœ‰æ•ˆ
          pre_rd2,
-         next_sram_en1,//ºóÒ»¼¶Æ¬Ñ¡£¬ÕâÒ»¼¶ºóÃæÒ»¹²ÓĞ4Æ¬sram£¬Á½Æ¬ÎªÒ»×é
+         next_sram_en1,//åä¸€çº§ç‰‡é€‰ï¼Œè¿™ä¸€çº§åé¢ä¸€å…±æœ‰4ç‰‡sramï¼Œä¸¤ç‰‡ä¸ºä¸€ç»„
          next_sram_en2,
-         next_wr1,//ºóÒ»¼¶Ğ´Ê¹ÄÜ
+         next_wr1,//åä¸€çº§å†™ä½¿èƒ½
          next_wr2,
-         next_addr,//Êä³öµ½ºóÒ»¼¶µØÖ·
-         weights_addr,//È¨ÖØµØÖ·
-         weights_sram_en,//È¨ÖØÆ¬Ñ¡
-         weights_sram_rd,//È¨ÖØ¶ÁÊ¹ÄÜ
-         img_request1,//¼ÆËãÍêÒ»·ùÍ¼Ö®ºóÏòISPÄ£¿é·¢ËÍÍ¼ÏñÇëÇó
+         next_addr,//è¾“å‡ºåˆ°åä¸€çº§åœ°å€
+         weights_addr,//æƒé‡åœ°å€
+         weights_sram_en,//æƒé‡ç‰‡é€‰
+         weights_sram_rd,//æƒé‡è¯»ä½¿èƒ½
+         img_request1,//è®¡ç®—å®Œä¸€å¹…å›¾ä¹‹åå‘ISPæ¨¡å—å‘é€å›¾åƒè¯·æ±‚
          img_request2,
-         calculate_en,//Ïò×´Ì¬»ú·¢ËÍ¿ÉÒÔ¿ªÊ¼¼ÆËãµÄĞÅºÅ
-         asm_send,//Õâ¸öĞÅºÅ¿ØÖÆ×´Ì¬»úÏòsram·¢ËÍ¼ÆËãºÃµÄÊı¾İ
-         next_sram_full1,//¼ÆËãÍê³ÉÖ®ºó¸æËßÏÂÒ»¼¶µÄsramÒÑ¾­ÔØÂú£¬¿ÉÒÔ¿ªÊ¼¼ÆËã
+         calculate_en,//å‘çŠ¶æ€æœºå‘é€å¯ä»¥å¼€å§‹è®¡ç®—çš„ä¿¡å·
+         asm_send,//è¿™ä¸ªä¿¡å·æ§åˆ¶çŠ¶æ€æœºå‘sramå‘é€è®¡ç®—å¥½çš„æ•°æ®
+         next_sram_full1,//è®¡ç®—å®Œæˆä¹‹åå‘Šè¯‰ä¸‹ä¸€çº§çš„sramå·²ç»è½½æ»¡ï¼Œå¯ä»¥å¼€å§‹è®¡ç®—
          next_sram_full2,
-         bn_addr,//bn´æ´¢Æ÷µÄµØÖ·
-         bn_rd,//¶ÁÊ¹ÄÜ
-         bn_en,//Æ¬Ñ¡
-         asm_choose//¿ØÖÆÊı¾İÊäÈëµ½ÄÄÒ»Æª×´Ì¬»ú
+         bn_addr,//bnå­˜å‚¨å™¨çš„åœ°å€
+         bn_rd,//è¯»ä½¿èƒ½
+         bn_en,//ç‰‡é€‰
+         asm_choose//æ§åˆ¶æ•°æ®è¾“å…¥åˆ°å“ªä¸€ç¯‡çŠ¶æ€æœº
     );
     
 //*******************
 //DEFINE PARAMETER
 //*******************
 //Parameter(s)
-parameter img_width=16;//Í¼ÏñµÄÎ»¿í
+parameter img_width=16;//å›¾åƒçš„ä½å®½
 parameter IDLE = 5'b00001,READY1 = 5'b00010 , READ_AND_SEND1 = 5'b00100, READY2 =5'b01000 ,READ_AND_SEND2 = 5'b10000;
 
 //*******************
@@ -76,17 +76,17 @@ input pre_sram_full1,pre_sram_full2,next_sram_empty1,next_sram_empty2;
 //*******************
 output  [img_width-1:0] dout;
 output  reg  img_request1,img_request2,calculate_en;
-output  [9:0] pre_addr;//10Î»µØÖ·Ïß
-output  reg  pre_sram_en1;//Ç°Ò»¼¶Æ¬Ñ¡
-output  reg  pre_sram_en2;//Ç°Ò»¼¶Æ¬Ñ¡
-output  reg  pre_rd1;//Ç°Ò»¼¶¶ÁÊ¹ÄÜ
+output  [9:0] pre_addr;//10ä½åœ°å€çº¿
+output  reg  pre_sram_en1;//å‰ä¸€çº§ç‰‡é€‰
+output  reg  pre_sram_en2;//å‰ä¸€çº§ç‰‡é€‰
+output  reg  pre_rd1;//å‰ä¸€çº§è¯»ä½¿èƒ½
 output  reg  pre_rd2;
-output  reg  next_sram_en1;//ºóÒ»¼¶Æ¬Ñ¡
+output  reg  next_sram_en1;//åä¸€çº§ç‰‡é€‰
 output  reg  next_sram_en2;
-output  reg   next_wr1;//ºóÒ»¼¶Ğ´Ê¹ÄÜ
+output  reg   next_wr1;//åä¸€çº§å†™ä½¿èƒ½
 output  reg   next_wr2;
-output  reg [13:0]      next_addr;//Êä³öµ½ºóÒ»¼¶µØÖ·£¬14Î»µØÖ·Ïß
-output  reg [8:0]       weights_addr;//9Î»µØÖ·Ïß
+output  reg [13:0]      next_addr;//è¾“å‡ºåˆ°åä¸€çº§åœ°å€ï¼Œ14ä½åœ°å€çº¿
+output  reg [8:0]       weights_addr;//9ä½åœ°å€çº¿
 output  reg [7:0]       weights_sram_en;
 output  reg [7:0]       weights_sram_rd;
 output  [7:0] asm_send;
@@ -102,29 +102,29 @@ output reg [7:0] asm_choose;
 //INNER SIGNAL DECLARATION
 //*********************
 //REGS
-reg [4:0] state;//5Î»µÄ×´Ì¬»úĞÅºÅ
+reg [4:0] state;//5ä½çš„çŠ¶æ€æœºä¿¡å·
 reg [4:0] nextstate;
-reg [9:0] count0;//Õâ¸ö¼ÆÊıÆ÷ÓÃÓÚÄ£ÄâÃ¿¸ö3x3»¬´°µÄÖĞĞÄÎ»ÖÃ£¬»®¹ıÕû¸öÌØÕ÷Í¼
-reg [1:0] count1;//Õâ¸ö¼ÆÊıÆ÷ÓÃÓÚÊıµ½3£¬ÒòÎªµÚÒ»²ãµÄÊäÈëÓĞÈı¸öÍ¨µÀ
-reg [3:0] count2;//Õâ¸ö¼ÆÊıÆ÷ÓÃÓÚÊıµ½9£¬ÒÔÎªÃ¿¸ö»¬´°ÓĞ9¸öÊı
-reg [3:0] count3;//Õâ¸ö¼ÆÊıÆ÷ÓÃÓÚÊıµ½16£¬ÒòÎªÒ»¹²ÓĞ°Ë¸ö¼ÆËãºË£¬128/8=16£¬¼ÆËãÊ®Áù´Î½«Ã¿Ò»¸öÍ¨µÀµÄµÚÒ»¸öÊıËã³ö
-reg [3:0] count4;//ÓÃÓÚ¼ÆÊıµ½8£¬´Óbn sramÖĞÈ¡°Ë¸öÊı
-reg signed [11:0] pre_addr_buffer;//Êä³öµ½Ç°Ò»¼¶µÄ¶ÁµØÖ·ĞÅºÅ£¬¶àÁËÒ»Î»·ûºÅÎ»
-reg signed [11:0] pre_addr_buffer1;//ÓÃÓÚ´òÒ»ÅÄ£¬¶ÔÓ¦µÄÊı¾İºÍµØÖ·²îÒ»¸öÖÜÆÚ
+reg [9:0] count0;//è¿™ä¸ªè®¡æ•°å™¨ç”¨äºæ¨¡æ‹Ÿæ¯ä¸ª3x3æ»‘çª—çš„ä¸­å¿ƒä½ç½®ï¼Œåˆ’è¿‡æ•´ä¸ªç‰¹å¾å›¾
+reg [1:0] count1;//è¿™ä¸ªè®¡æ•°å™¨ç”¨äºæ•°åˆ°3ï¼Œå› ä¸ºç¬¬ä¸€å±‚çš„è¾“å…¥æœ‰ä¸‰ä¸ªé€šé“
+reg [3:0] count2;//è¿™ä¸ªè®¡æ•°å™¨ç”¨äºæ•°åˆ°9ï¼Œä»¥ä¸ºæ¯ä¸ªæ»‘çª—æœ‰9ä¸ªæ•°
+reg [3:0] count3;//è¿™ä¸ªè®¡æ•°å™¨ç”¨äºæ•°åˆ°16ï¼Œå› ä¸ºä¸€å…±æœ‰å…«ä¸ªè®¡ç®—æ ¸ï¼Œ128/8=16ï¼Œè®¡ç®—åå…­æ¬¡å°†æ¯ä¸€ä¸ªé€šé“çš„ç¬¬ä¸€ä¸ªæ•°ç®—å‡º
+reg [3:0] count4;//ç”¨äºè®¡æ•°åˆ°8ï¼Œä»bn sramä¸­å–å…«ä¸ªæ•°
+reg signed [11:0] pre_addr_buffer;//è¾“å‡ºåˆ°å‰ä¸€çº§çš„è¯»åœ°å€ä¿¡å·ï¼Œå¤šäº†ä¸€ä½ç¬¦å·ä½
+reg signed [11:0] pre_addr_buffer1;//ç”¨äºæ‰“ä¸€æ‹ï¼Œå¯¹åº”çš„æ•°æ®å’Œåœ°å€å·®ä¸€ä¸ªå‘¨æœŸ
 reg [7:0] asm_send1;
-reg [7:0] asm_send2;//ÓÃÓÚ´òÁ½ÅÄµÄ¼Ä´æÆ÷
+reg [7:0] asm_send2;//ç”¨äºæ‰“ä¸¤æ‹çš„å¯„å­˜å™¨
 reg [7:0] asm_send3;
 reg [13:0] next_addr_buffer;
-reg lock;//ËøĞÅºÅ£¬ËãÍêÒ»ÕÅÍ¼Ö®ºó°Ñ¼ÆÊıÆ÷Ëø×¡£¬²»ÈÃÆä¼ÌĞø¼ÆÊı
-reg one_image_finish1;//Ò»·ùÍ¼Æ¬¼ÆËã½áÊøºóµÄ±êÖ¾ĞÅºÅ
+reg lock;//é”ä¿¡å·ï¼Œç®—å®Œä¸€å¼ å›¾ä¹‹åæŠŠè®¡æ•°å™¨é”ä½ï¼Œä¸è®©å…¶ç»§ç»­è®¡æ•°
+reg one_image_finish1;//ä¸€å¹…å›¾ç‰‡è®¡ç®—ç»“æŸåçš„æ ‡å¿—ä¿¡å·
 reg one_image_finish2;
-reg en_delay1 ,en_delay2,en_delay3,en_delay4;//ÓÃÓÚÉÏÉıÑØ¼ì²â
+reg en_delay1 ,en_delay2,en_delay3,en_delay4;//ç”¨äºä¸Šå‡æ²¿æ£€æµ‹
 reg start_read_bn;
-reg [8:0] weights_addr_buffer;//´òÅÄÓÃ
+reg [8:0] weights_addr_buffer;//æ‰“æ‹ç”¨
 reg [6:0] bn_addr_buffer; 
 //WIRES
 
-//µÚÒ»¶Î×´Ì¬»ú
+//ç¬¬ä¸€æ®µçŠ¶æ€æœº
  always@(posedge clk or negedge rst)
  begin//xxxx
    if(!rst)
@@ -133,7 +133,7 @@ reg [6:0] bn_addr_buffer;
            state<=nextstate;
  end//xxxx   
 
-//µÚ¶ş¶Î×´Ì¬»ú
+//ç¬¬äºŒæ®µçŠ¶æ€æœº
 always@(*)
 begin//xxxx
    case(state)
@@ -167,7 +167,7 @@ begin//xxxx
    endcase
 end//xxxx
 
-//µÚÈı¶Î×´Ì¬»ú
+//ç¬¬ä¸‰æ®µçŠ¶æ€æœº
 always@(posedge clk or negedge rst)
 begin//xxxx
   if(!rst)
@@ -234,7 +234,7 @@ begin//xxxx
              weights_addr_buffer<=0;
              bn_addr_buffer<=0;
       end
-  else if(state==READ_AND_SEND1)//¶ÁÊı¾İ£¬¼ÆËã£¬²¢ÏòºóÃæÁ½Æ¬sramÖĞµÄµÚÒ»Æ¬·¢ËÍÊı¾İ£¬Ô´Ô´²»¶ÏµÄÏò¼ÆËãµ¥Ôª·¢ËÍÊı¾İ£¬²»½ö½öÊÇ¶ÁÌØÕ÷Í¼£¬Í¬Ê±Ò²ÊÇ¶ÁÈ¨ÖØ£¬ÈÃÌØÕ÷Í¼ÓëÈ¨ÖØÆ¥Åä
+  else if(state==READ_AND_SEND1)//è¯»æ•°æ®ï¼Œè®¡ç®—ï¼Œå¹¶å‘åé¢ä¸¤ç‰‡sramä¸­çš„ç¬¬ä¸€ç‰‡å‘é€æ•°æ®ï¼Œæºæºä¸æ–­çš„å‘è®¡ç®—å•å…ƒå‘é€æ•°æ®ï¼Œä¸ä»…ä»…æ˜¯è¯»ç‰¹å¾å›¾ï¼ŒåŒæ—¶ä¹Ÿæ˜¯è¯»æƒé‡ï¼Œè®©ç‰¹å¾å›¾ä¸æƒé‡åŒ¹é…
       begin//aaaa
           if((pre_sram_full1==1'b1) && (next_sram_empty1==1'b1))
              begin//789a
@@ -271,7 +271,7 @@ begin//xxxx
                      end//aaas
                  else  begin count1<=count1+1; asm_send1<=8'b00000000; end
                  
-                 if(count2==0) begin  pre_addr_buffer<=count0-33; start_read_bn<=1;     end  //ÊäÈë³ß´çÊÇ32x32£¬pre_addr_bufferÊÇÓĞ·ûºÅÊı£¬count0ÊÇÎŞ·ûºÅÊı£¬È·ÈÏÒ»ÏÂÕâÑù×ö¿É²»¿ÉÒÔ£¬×¢ÒâÕâÀï´òÁËÒ»ÅÄ
+                 if(count2==0) begin  pre_addr_buffer<=count0-33; start_read_bn<=1;     end  //è¾“å…¥å°ºå¯¸æ˜¯32x32ï¼Œpre_addr_bufferæ˜¯æœ‰ç¬¦å·æ•°ï¼Œcount0æ˜¯æ— ç¬¦å·æ•°ï¼Œç¡®è®¤ä¸€ä¸‹è¿™æ ·åšå¯ä¸å¯ä»¥ï¼Œæ³¨æ„è¿™é‡Œæ‰“äº†ä¸€æ‹
                  if(count2==1) begin  pre_addr_buffer<=count0-32;      end
                  if(count2==2) begin  pre_addr_buffer<=count0-31;      end
                  if(count2==3) begin  pre_addr_buffer<=count0-1;       end
@@ -282,10 +282,10 @@ begin//xxxx
                  if(count2==8) begin  pre_addr_buffer<=count0+33;      end
              end//asd 
                  
-                 asm_send2<=asm_send1;//·¢ËÍĞÅºÅ´òÒ»ÅÄ
+                 asm_send2<=asm_send1;//å‘é€ä¿¡å·æ‰“ä¸€æ‹
                  //asm_send3<=asm_send2;
                  
-                 if(asm_send2 == 8'b11111111)//Ïàµ±ÓÚ´òÁË¶şÅÄ
+                 if(asm_send2 == 8'b11111111)//ç›¸å½“äºæ‰“äº†äºŒæ‹
                      begin
                          next_addr<=next_addr_buffer;
                          next_addr_buffer<=next_addr_buffer+1;
@@ -294,7 +294,7 @@ begin//xxxx
                          if(lock==1)
                           one_image_finish1<=1;
                      end
-                 else   //ÓÃÍêÖ®ºóÂíÉÏ½«sram¹Ø±ÕÒÔÃâĞ´½øÈ¥´íÎóµÄÊı¾İ
+                 else   //ç”¨å®Œä¹‹åé©¬ä¸Šå°†sramå…³é—­ä»¥å…å†™è¿›å»é”™è¯¯çš„æ•°æ®
                      begin
                          next_sram_en1<=1;
                          next_wr1<=1;
@@ -335,7 +335,7 @@ begin//xxxx
                      end
                     end
 
-                 pre_addr_buffer1<=pre_addr_buffer;//´òÒ»ÅÄ
+                 pre_addr_buffer1<=pre_addr_buffer;//æ‰“ä¸€æ‹
                  
                  if(!lock)begin
                  if((count1==2) && (count2==8) && (count3==15))
@@ -407,7 +407,7 @@ begin//xxxx
                      end//aaas
                  else  begin count1<=count1+1; asm_send1<=8'b00000000; end
                  
-                 if(count2==0) begin  pre_addr_buffer<=count0-33; start_read_bn<=1;      end  //ÊäÈë³ß´çÊÇ32x32£¬pre_addr_bufferÊÇÓĞ·ûºÅÊı£¬count0ÊÇÎŞ·ûºÅÊı£¬È·ÈÏÒ»ÏÂÕâÑù×ö¿É²»¿ÉÒÔ£¬×¢ÒâÕâÀï´òÁËÒ»ÅÄ
+                 if(count2==0) begin  pre_addr_buffer<=count0-33; start_read_bn<=1;      end  //è¾“å…¥å°ºå¯¸æ˜¯32x32ï¼Œpre_addr_bufferæ˜¯æœ‰ç¬¦å·æ•°ï¼Œcount0æ˜¯æ— ç¬¦å·æ•°ï¼Œç¡®è®¤ä¸€ä¸‹è¿™æ ·åšå¯ä¸å¯ä»¥ï¼Œæ³¨æ„è¿™é‡Œæ‰“äº†ä¸€æ‹
                  if(count2==1) begin  pre_addr_buffer<=count0-32;      end
                  if(count2==2) begin  pre_addr_buffer<=count0-31;      end
                  if(count2==3) begin  pre_addr_buffer<=count0-1;       end
@@ -419,10 +419,10 @@ begin//xxxx
                  
              end//asd 
                  
-                 asm_send2<=asm_send1;//·¢ËÍĞÅºÅ´ò1ÅÄ
+                 asm_send2<=asm_send1;//å‘é€ä¿¡å·æ‰“1æ‹
                  //asm_send3<=asm_send2;
                  
-                 if(asm_send2== 8'b11111111)//Ïàµ±ÓÚ´òÁË2ÅÄ
+                 if(asm_send2== 8'b11111111)//ç›¸å½“äºæ‰“äº†2æ‹
                      begin
                          next_addr<=next_addr_buffer;
                          next_addr_buffer<=next_addr_buffer+1;
@@ -431,7 +431,7 @@ begin//xxxx
                          if(lock==1)
                           one_image_finish2<=1;
                      end
-                 else   //ÓÃÍêÖ®ºóÂíÉÏ½«sram¹Ø±ÕÒÔÃâĞ´½øÈ¥´íÎóµÄÊı¾İ
+                 else   //ç”¨å®Œä¹‹åé©¬ä¸Šå°†sramå…³é—­ä»¥å…å†™è¿›å»é”™è¯¯çš„æ•°æ®
                      begin
                          next_sram_en2<=1;
                          next_wr2<=1;
@@ -473,7 +473,7 @@ begin//xxxx
                      end
                     end
                  
-                 pre_addr_buffer1<=pre_addr_buffer;//´òÒ»ÅÄ
+                 pre_addr_buffer1<=pre_addr_buffer;//æ‰“ä¸€æ‹
                  
                  if(!lock)begin
                  if((count1==2) && (count2==8) && (count3==15))
@@ -489,7 +489,7 @@ begin//xxxx
 
 end//xxxx
 
-//ÓëÇ°ºóÁ½¼¶Á÷Ë®ÏßµÄÎÕÊÖÄ£¿é
+//ä¸å‰åä¸¤çº§æµæ°´çº¿çš„æ¡æ‰‹æ¨¡å—
 always@(posedge clk or negedge rst)
 begin//xxxx
 if(!rst)
@@ -514,7 +514,7 @@ else
         if((en_delay1==0) && (next_sram_empty1))
             next_sram_full1<=0;
             
-        en_delay2<=pre_sram_full1;    //ÉÏÉıÑØ¼ì²âºó¶ËÊÇ·ñ»á³öÏÖÎÊÌâ£¬ÊÇ·ñ»á²úÉúÑÇÎÈÌ¬£¿
+        en_delay2<=pre_sram_full1;    //ä¸Šå‡æ²¿æ£€æµ‹åç«¯æ˜¯å¦ä¼šå‡ºç°é—®é¢˜ï¼Œæ˜¯å¦ä¼šäº§ç”Ÿäºšç¨³æ€ï¼Ÿ
         if((en_delay1==0) && (pre_sram_full1))
             img_request1<=0;
             
@@ -534,8 +534,8 @@ else
     end
 end//xxxx
 
-assign dout = ((pre_addr_buffer1<0)|| (pre_addr_buffer1>1023)) ? 0 : din;//³¬³ö±ß½çµÄ²¿·ÖÊä³öÁã£¬ÎªpaddingµÄ²¿·Ö,·ñÔòÎª´ÓsramÖĞÈ¡³öµÄÊı
-assign pre_addr = pre_addr_buffer[9:0];    //µÍ¾ÅÎ»ÕâÃ´Ğ´ÊÇ·ñÕıÈ·£¬È¥µô·ûºÅÎ»
+assign dout = ((pre_addr_buffer1<0)|| (pre_addr_buffer1>1023)) ? 0 : din;//è¶…å‡ºè¾¹ç•Œçš„éƒ¨åˆ†è¾“å‡ºé›¶ï¼Œä¸ºpaddingçš„éƒ¨åˆ†,å¦åˆ™ä¸ºä»sramä¸­å–å‡ºçš„æ•°
+assign pre_addr = pre_addr_buffer[9:0];    //ä½ä¹ä½è¿™ä¹ˆå†™æ˜¯å¦æ­£ç¡®ï¼Œå»æ‰ç¬¦å·ä½
 assign asm_send = asm_send2;
     
     
