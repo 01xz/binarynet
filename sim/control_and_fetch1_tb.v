@@ -1,7 +1,8 @@
-`timescale 1ns / 1ps
+`timescale 1ns / 10ps
 
 module control_and_fetch1_tb;
-  localparam IMG_WIDTH = 16;
+  localparam IMG_WIDTH  = 16;
+  localparam ADDR_WIDTH = 10;
 
   reg clk;
   reg rst_n;
@@ -9,7 +10,10 @@ module control_and_fetch1_tb;
   reg pre_sram_full2;
   reg next_sram_empty1;
   reg next_sram_empty2;
-  reg [IMG_WIDTH - 1:0] din;
+
+  wire [IMG_WIDTH - 1:0] din;
+  wire [IMG_WIDTH - 1:0] sdout1;
+  wire [IMG_WIDTH - 1:0] sdout2;
 
   wire        img_request1;
   wire        img_request2;
@@ -39,25 +43,28 @@ module control_and_fetch1_tb;
   initial begin
     clk              = 1'b1;
     rst_n            = 1'b0;
-    pre_sram_full1   = 1'b0;
-    pre_sram_full2   = 1'b0;
-    next_sram_empty1 = 1'b0;
-    next_sram_empty2 = 1'b0;
-    din              = IMG_WIDTH{1'b0};
+    pre_sram_full1   = 1'b1;
+    pre_sram_full2   = 1'b1;
+    next_sram_empty1 = 1'b1;
+    next_sram_empty2 = 1'b1;
+    //din              = {IMG_WIDTH{1'b0}};
   end
 
   always #10 clk = ~clk;
 
   initial begin
-    repeat (10) @(posedge clk);
+    repeat (1) @(posedge clk);
       rst_n <= 1;
-    repeat (1000) @(posedge clk);
+    repeat (1000000) @(posedge clk);
       $finish;
   end
 
+  initial begin
+    $dumpfile("control_and_fetch1_tb.vcd");
+    $dumpvars(0, control_and_fetch1_tb);
+  end
 
-
-  control_and_fetch1 #(
+  CONTROL_AND_FETCH1 #(
     .img_width (IMG_WIDTH)
   ) dut (
     // INPUT PIN
@@ -94,7 +101,31 @@ module control_and_fetch1_tb;
     .bn_en           (bn_en),
     .asm_choose      (asm_choose)
   );
-
   
-endmodule
+  sram_sim #(
+    .DW(IMG_WIDTH),
+    .AW(ADDR_WIDTH)
+  ) u_sram_sim1 (
+    .clk (clk),
+    .cs  (pre_sram_en1),
+    .oe  (pre_rd1),
+    .we  (1'b1),
+    .addr(pre_addr),
+    .data(sdout1)
+  );
 
+  sram_sim #(
+    .DW(IMG_WIDTH),
+    .AW(ADDR_WIDTH)
+  ) u_sram_sim2 (
+    .clk (clk),
+    .cs  (pre_sram_en2),
+    .oe  (pre_rd2),
+    .we  (1'b1),
+    .addr(pre_addr),
+    .data(sdout2)
+  );
+
+  assign din = (pre_rd1 == 0) ? sdout1 : ((pre_rd2 == 0) ? sdout2 : 0);
+
+endmodule
