@@ -3,7 +3,7 @@
 module asm_tb;
   localparam IMG_WIDTH    = 16;
   localparam BN_WIDTH     = 16;
-  localparam RESULT_WIDTH = 6;
+  localparam RESULT_WIDTH = 22;
 
   reg clk,
   reg rst_n,
@@ -30,8 +30,8 @@ module asm_tb;
   always #10 clk = ~clk;
 
   initial begin
-    repeat (1) @(posedge clk);
-      rst_n <= 10;
+    repeat (10) @(posedge clk);
+      rst_n <= 1'b1;
     repeat (5000) @(posedge clk);
       $finish;
   end

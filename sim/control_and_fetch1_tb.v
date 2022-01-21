@@ -47,14 +47,13 @@ module control_and_fetch1_tb;
     pre_sram_full2   = 1'b1;
     next_sram_empty1 = 1'b1;
     next_sram_empty2 = 1'b1;
-    //din              = {IMG_WIDTH{1'b0}};
   end
 
   always #10 clk = ~clk;
 
   initial begin
     repeat (1) @(posedge clk);
-      rst_n <= 1;
+      rst_n <= 1'b1;
     repeat (1000000) @(posedge clk);
       $finish;
   end
