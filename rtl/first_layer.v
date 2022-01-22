@@ -22,17 +22,17 @@
 
 module first_layer(
 //INPUT
-pre_data_offm,//æ¥æºäºæ¨¡å—å¤–çš„ä¿¡å·ï¼Œoff module,ç”±å‰ä¸€çº§çš„ä¿¡å·æ§åˆ¶å‰ä¸€çº§sramçš„å†™
+pre_data_offm,//À´Ô´ÓÚÄ£¿éÍâµÄĞÅºÅ£¬off module,ÓÉÇ°Ò»¼¶µÄĞÅºÅ¿ØÖÆÇ°Ò»¼¶sramµÄĞ´
 pre_wr1_offm,pre_wr2_offm,
 pre_en1_offm,pre_en2_offm,
 pre_addr_offm,
 
-next_rd1_offm,next_rd2_offm,//ç”±åä¸€çº§çš„ä¿¡å·æ§åˆ¶sramçš„è¯»
+next_rd1_offm,next_rd2_offm,//ÓÉºóÒ»¼¶µÄĞÅºÅ¿ØÖÆsramµÄ¶Á
 next_en1_offm,next_en2_offm,
 next_addr_offm,
 
 
-pre_sram_full1,//å‰åå‘é€è¿‡æ¥çš„æ¡æ‰‹ä¿¡å·
+pre_sram_full1,//Ç°ºó·¢ËÍ¹ıÀ´µÄÎÕÊÖĞÅºÅ
 pre_sram_full2,
 next_sram_empty1,
 next_sram_empty2,
@@ -41,18 +41,15 @@ clk,
 rst,
 
 weight_offm,
-bn_offm,
-weight_en1_offm,weight_en2_offm,weight_en3_offm,
-weight_en4_offm,weight_en5_offm,weight_en6_offm,
-weight_en7_offm,weight_en8_offm,weight_en9_offm,
-
-weight_wr1_offm,weight_wr2_offm,weight_wr3_offm,
-weight_wr4_offm,weight_wr5_offm,weight_wr6_offm,
-weight_wr7_offm,weight_wr8_offm,weight_wr9_offm,
+weight_en_offm,
+weight_wr_offm,
 weight_addr_offm,
 bn_addr_offm,
+bn_offm,
+bn_en_offm,
+bn_wr_offm,
 //OUTPUT
-next_sram_full1,//ç»™å‰åä¸¤çº§å‘é€çš„æ¡æ‰‹ä¿¡å·
+next_sram_full1,//¸øÇ°ºóÁ½¼¶·¢ËÍµÄÎÕÊÖĞÅºÅ
 next_sram_full2,
 img_request1,
 img_request2,
@@ -74,25 +71,24 @@ input [pre_addr_width-1:0] pre_addr_offm;
 input next_rd1_offm,next_rd2_offm;
 input next_en1_offm,next_en2_offm;
 input [next_addr_width-1:0] next_addr_offm;
-output [7:0]next_data_offm;//next sramä¸­çš„æ•°æ˜¯8ä¸ª8ä¸ªå­˜çš„ï¼Œæ‰€ä»¥æ˜¯8ä½
+output [15:0]next_data_offm;//next sramÖĞµÄÊıÊÇ8¸ö8¸ö´æµÄ£¬ËùÒÔÊÇ8Î»
 
-input pre_sram_full1;//å‰åå‘é€è¿‡æ¥çš„æ¡æ‰‹ä¿¡å·
+input pre_sram_full1;//Ç°ºó·¢ËÍ¹ıÀ´µÄÎÕÊÖĞÅºÅ
 input pre_sram_full2;
 input next_sram_empty1;
 input next_sram_empty2;
 
 input clk,rst;
 
-input weight_offm;//æƒé‡æ˜¯ä¸€ä½çš„
-input [15:0] bn_offm;//bnç³»æ•°æ˜¯16ä½çš„
-input weight_en1_offm,weight_en2_offm,weight_en3_offm,
-weight_en4_offm,weight_en5_offm,weight_en6_offm,
-weight_en7_offm,weight_en8_offm,weight_en9_offm;
-input weight_wr1_offm,weight_wr2_offm,weight_wr3_offm,
-weight_wr4_offm,weight_wr5_offm,weight_wr6_offm,
-weight_wr7_offm,weight_wr8_offm,weight_wr9_offm;
+input[7:0] weight_offm;//È¨ÖØÊÇÒ»Î»µÄ
+input weight_en_offm;
+input weight_wr_offm;
 input [weight_addr_width-1:0] weight_addr_offm;
+
 input [bn_addr_width-1:0] bn_addr_offm;
+input [15:0] bn_offm;//bnÏµÊıÊÇ16Î»µÄ
+input bn_en_offm;
+input bn_wr_offm;
 
 output next_sram_full1;
 output next_sram_full2;
@@ -102,21 +98,6 @@ output img_request2;
 
 
 
-wire weight_sram_cs1,weight_sram_cs2,weight_sram_cs3,weight_sram_cs4,weight_sram_cs5,weight_sram_cs6,weight_sram_cs7,weight_sram_cs8,weight_sram_cs9;
-wire data1,data2,data3,data4,data5,data6,data7,data8;
-wire [15:0] data9;
-wire [6:0] bn_sram_addr;
-wire [8:0] weight_sram_addr;
-
-
-wire [img_width-1:0] pre_sram_data1; 
-wire [img_width-1:0] pre_sram_data2; 
-wire [pre_addr_width-1:0] pre_sram_addr;
-wire pre_sram_cs1,pre_sram_cs2;
-
-wire next_sram_cs1,next_sram_cs2;
-wire [7:0] next_sram_data1,next_sram_data2;
-wire [13:0] next_sram_addr;
 
 wire pre_en1_ctr,pre_en2_ctr;
 wire pre_rd1_ctr,pre_rd2_ctr;
@@ -132,119 +113,84 @@ wire [6:0] bn_addr_ctr;
 wire bn_rd_ctr,bn_en_ctr;
 wire [7:0] asm_send;
 wire [7:0] asm_choose;
-wire [7:0] data_out;
-
-assign weight_sram_cs1 = (weight_rd_ctr == 0) ?  weight_en_ctr : ((weight_wr1_offm == 0) ? weight_en1_offm : 1);
-assign weight_sram_cs2 = (weight_rd_ctr == 0) ?  weight_en_ctr : ((weight_wr2_offm == 0) ? weight_en2_offm : 1);  
-assign weight_sram_cs3 = (weight_rd_ctr == 0) ?  weight_en_ctr : ((weight_wr3_offm == 0) ? weight_en3_offm : 1);
-assign weight_sram_cs4 = (weight_rd_ctr == 0) ?  weight_en_ctr : ((weight_wr4_offm == 0) ? weight_en4_offm : 1);
-assign weight_sram_cs5 = (weight_rd_ctr == 0) ?  weight_en_ctr : ((weight_wr5_offm == 0) ? weight_en5_offm : 1);
-assign weight_sram_cs6 = (weight_rd_ctr == 0) ?  weight_en_ctr : ((weight_wr6_offm == 0) ? weight_en6_offm : 1);
-assign weight_sram_cs7 = (weight_rd_ctr == 0) ?  weight_en_ctr : ((weight_wr7_offm == 0) ? weight_en7_offm : 1);
-assign weight_sram_cs8 = (weight_rd_ctr == 0) ?  weight_en_ctr : ((weight_wr8_offm == 0) ? weight_en8_offm : 1);
-assign weight_sram_cs9 = (weight_rd_ctr == 0) ?  bn_en_ctr : ((weight_wr9_offm == 0) ? weight_en9_offm : 1); 
-assign data1 = (weight_rd_ctr == 0) ? data1  :  ((weight_wr1_offm == 0) ? weight_offm : 0);
-assign data2 = (weight_rd_ctr == 0) ? data2  :  ((weight_wr2_offm == 0) ? weight_offm : 0);
-assign data3 = (weight_rd_ctr == 0) ? data3  :  ((weight_wr3_offm == 0) ? weight_offm : 0);
-assign data4 = (weight_rd_ctr == 0) ? data4  :  ((weight_wr4_offm == 0) ? weight_offm : 0);
-assign data5 = (weight_rd_ctr == 0) ? data5  :  ((weight_wr5_offm == 0) ? weight_offm : 0);
-assign data6 = (weight_rd_ctr == 0) ? data6  :  ((weight_wr6_offm == 0) ? weight_offm : 0);
-assign data7 = (weight_rd_ctr == 0) ? data7  :  ((weight_wr7_offm == 0) ? weight_offm : 0);
-assign data8 = (weight_rd_ctr == 0) ? data8  :  ((weight_wr8_offm == 0) ? weight_offm : 0);
-assign data9 = (bn_rd_ctr == 0) ? data9  :  ((weight_wr9_offm == 0) ? bn_offm : 0);
-assign weight_sram_addr =  (weight_rd_ctr == 0) ? weight_addr_ctr : (((weight_wr1_offm == 0)||(weight_wr2_offm == 0)||
-(weight_wr3_offm == 0)||(weight_wr4_offm == 0)||(weight_wr5_offm == 0)||(weight_wr6_offm == 0)||(weight_wr7_offm == 0)||
-(weight_wr8_offm == 0)) ? weight_addr_offm:0 );
-assign bn_sram_addr = (bn_rd_ctr == 0) ? bn_addr_ctr : (((weight_wr9_offm == 0)) ? bn_addr_offm:0 );
-
-weight_sram1 U_WEIGHT_SRAM(
+wire [15:0] data_out;
+wire [7:0] weight;
+wire [15:0] bn;
+weight_sram1(
 //INPUT
-.cs1(weight_sram_cs1),
-.cs2(weight_sram_cs2),
-.cs3(weight_sram_cs3),
-.cs4(weight_sram_cs4),
-.cs5(weight_sram_cs5),
-.cs6(weight_sram_cs6),
-.cs7(weight_sram_cs7),
-.cs8(weight_sram_cs8),
-.cs9(weight_sram_cs9),
-.oe1(weight_rd_ctr),
-.oe9(bn_rd_ctr),
-.we1(weight_wr1_offm),
-.we2(weight_wr2_offm),
-.we3(weight_wr3_offm),
-.we4(weight_wr4_offm),
-.we5(weight_wr5_offm),
-.we6(weight_wr6_offm),
-.we7(weight_wr7_offm),
-.we8(weight_wr8_offm),
-.we9(weight_wr9_offm),
-.data1(data1),
-.data2(data2),
-.data3(data3),
-.data4(data4),
-.data5(data5),
-.data6(data6),
-.data7(data7),
-.data8(data8),
-.data9(data9),
-.addr1(weight_sram_addr),
-.addr2(weight_sram_addr),
-.addr3(weight_sram_addr),
-.addr4(weight_sram_addr),
-.addr5(weight_sram_addr),
-.addr6(weight_sram_addr),
-.addr7(weight_sram_addr),
-.addr8(weight_sram_addr),
-.addr9(bn_sram_addr),
+.cs1_rd(weight_en_ctr),
+.cs1_wr(weight_en_offm),
+.oe1_rd(weight_rd_ctr),
+.oe1_wr(1'b1),
+.we1_rd(1'b1),
+.we1_wr(weight_wr_offm),
+.cs2_rd(bn_en_ctr),
+.cs2_wr(bn_en_offm),
+.oe2_rd(bn_rd_ctr),
+.oe2_wr(1'b1),
+.we2_rd(1'b1),
+.we2_wr(bn_wr_offm),
+.data1_rd(weight),
+.data1_wr(weight_offm),
+.data2_rd(bn),
+.data2_wr(bn_offm),
+.addr1_rd(weight_addr_ctr),
+.addr1_wr(weight_addr_offm),
+.addr2_rd(bn_addr_ctr),
+.addr2_wr(bn_addr_offm),
 .clk(clk)
-    );    
-
-
-assign pre_sram_data1 = (pre_rd1_ctr==0) ?  pre_sram_data1 : ((pre_wr1_offm == 0) ? pre_data_offm :0 );
-assign pre_sram_data2 = (pre_rd2_ctr==0) ?  pre_sram_data2 : ((pre_wr1_offm == 0) ? pre_data_offm :0 );
-
-
-assign pre_sram_cs1 = (pre_rd1_ctr==0) ? pre_en1_ctr : ((pre_wr1_offm==0) ? pre_en1_offm: 1);
-assign pre_sram_cs2 = (pre_rd2_ctr==0) ? pre_en2_ctr : ((pre_wr2_offm==0) ? pre_en2_offm: 1);
-assign pre_sram_addr = ((pre_rd1_ctr==0)||(pre_rd2_ctr==0) ) ? pre_addr_ctr : (((pre_wr1_offm==0)||(pre_wr2_offm==0)) ? pre_addr_offm: 0);
-pre_sram U_PRE_SRAM(
+    );
+    wire [15:0] pre_data1_rd,pre_data2_rd;
+pre_sram(
 //INPUT
-.cs1(pre_sram_cs1),
-.cs2(pre_sram_cs2),
-.oe1(pre_rd1_ctr),
-.oe2(pre_rd2_ctr),
-.we1(pre_wr1_offm),
-.we2(pre_wr2_offm),
-.data1(pre_sram_data1),
-.data2(pre_sram_data2),
-.addr(pre_sram_addr),
+.cs1_rd(pre_en1_ctr),
+.cs1_wr(pre_en1_offm),
+.cs2_rd(pre_en2_ctr),
+.cs2_wr(pre_en2_offm),
+.oe1_rd(pre_rd1_ctr),
+.oe1_wr(1'b1),
+.oe2_rd(pre_rd2_ctr),
+.oe2_wr(1'b1),
+.we1_rd(1'b1),
+.we1_wr(pre_wr1_offm),
+.we2_rd(1'b1),
+.we2_wr(pre_wr2_offm),
+.data1_rd(pre_data1_rd),
+.data_wr(pre_data_offm),
+.data2_rd(pre_data2_rd),
+.addr_rd(pre_addr_ctr),
+.addr_wr(pre_addr_offm),
+.clk(clk)
+//OUTPUT
+    );
+wire [15:0] next_data1_rd,next_data2_rd;
+assign next_data_offm = (next_rd1_offm == 0) ? next_data1_rd :((next_rd2_offm == 0) ? next_data2_rd : 0);
+next_sram(
+//INPUT
+.cs1_rd(next_en1_offm),
+.cs1_wr(next_en1_ctr),
+.cs2_rd(next_en2_offm),
+.cs2_wr(next_en2_ctr),
+.oe1_rd(next_rd1_offm),
+.oe1_wr(1'b1),
+.oe2_rd(next_rd2_offm),
+.oe2_wr(1'b1),
+.we1_rd(1'b1),
+.we1_wr(next_wr1_ctr),
+.we2_rd(1'b1),
+.we2_wr(next_wr2_ctr),
+.data1_rd(next_data1_rd),
+.data_wr(data_out),//¶ÁµÄÊ±ºò¹²ÓÃÒ»¸ö½Ó¿Ú¿ÉÄÜ»á³öÏÖÎÊÌâ
+.data2_rd(next_data2_rd),
+.addr_rd(next_addr_offm),
+.addr_wr(next_addr_ctr),
 .clk(clk)
 //OUTPUT
     );
 
-assign next_sram_cs1 = (next_wr1_ctr==0) ?  next_en1_ctr : ((next_rd1_offm == 0) ?  next_en1_offm : 1);
-assign next_sram_cs2 = (next_wr2_ctr==0) ?  next_en2_ctr : ((next_rd1_offm == 0) ?  next_en1_offm : 1);
-assign next_sram_data1 = (next_wr1_ctr==0) ?  data_out : ((next_rd1_offm == 0) ?  next_sram_data1 : 0);
-assign next_sram_data2 = (next_wr2_ctr==0) ?  data_out : ((next_rd2_offm == 0) ?  next_sram_data2 : 0);
-assign next_sram_addr = ((next_wr1_ctr==0)||(next_wr2_ctr == 0)) ? next_addr_ctr : (((next_rd1_offm==0)||(next_rd2_offm==0)) ? next_addr_offm: 0);
-next_sram U_NEXT_SRAM(
-//INPUT
-.cs1(next_sram_cs1),
-.cs2(next_sram_cs2),
-.oe1(next_rd1_offm),
-.oe2(next_rd2_offm),
-.we1(next_wr1_ctr),
-.we2(next_wr2_ctr),
-.data1(next_sram_data1),
-.data2(next_sram_data2),
-.addr(next_sram_addr),
-.clk(clk)
-//OUTPUT
-    );
-    /**æœ‰ctråç¼€çš„sramæ§åˆ¶ä¿¡å·ä»£è¡¨æ¥è‡ªäºCONTROL_AND_FETCH1æ¨¡å—**/
+    /**ÓĞctrºó×ºµÄsram¿ØÖÆĞÅºÅ´ú±íÀ´×ÔÓÚCONTROL_AND_FETCH1Ä£¿é**/
 
-assign din = (pre_rd1_ctr == 0) ? pre_sram_data1:((pre_rd1_ctr == 0) ?  pre_sram_data2 : 0);
+assign din = (pre_rd1_ctr == 0) ? pre_data1_rd:((pre_rd1_ctr == 0) ?  pre_data2_rd : 0);
 CONTROL_AND_FETCH1 U_CONTROL_AND_FETCH(
          //INPUT
          .clk(clk),
@@ -256,43 +202,43 @@ CONTROL_AND_FETCH1 U_CONTROL_AND_FETCH(
          .next_sram_empty2(next_sram_empty2),
          //OUTPUT
          .dout(dout),
-         .pre_addr(pre_addr_ctr), //å‘é€ç»™å‰ä¸€çº§sramçš„åœ°å€
-         .pre_sram_en1(pre_en1_ctr),//å‘é€ç»™å‰ä¸€çº§sramçš„ç‰‡é€‰ä¿¡å·
+         .pre_addr(pre_addr_ctr), //·¢ËÍ¸øÇ°Ò»¼¶sramµÄµØÖ·
+         .pre_sram_en1(pre_en1_ctr),//·¢ËÍ¸øÇ°Ò»¼¶sramµÄÆ¬Ñ¡ĞÅºÅ
          .pre_sram_en2(pre_en2_ctr),
-         .pre_rd1(pre_rd1_ctr),//å‘é€ç»™å‰ä¸€çº§sramçš„è¯»ä½¿èƒ½ä¿¡å·
+         .pre_rd1(pre_rd1_ctr),//·¢ËÍ¸øÇ°Ò»¼¶sramµÄ¶ÁÊ¹ÄÜĞÅºÅ
          .pre_rd2(pre_rd2_ctr),
-         .next_sram_en1(next_en1_ctr),//å‘é€ç»™ä¸‹ä¸€çº§sramçš„ç‰‡é€‰ä¿¡å·
+         .next_sram_en1(next_en1_ctr),//·¢ËÍ¸øÏÂÒ»¼¶sramµÄÆ¬Ñ¡ĞÅºÅ
          .next_sram_en2(next_en2_ctr),
-         .next_wr1(next_wr1_ctr),//å‘é€ç»™ä¸‹ä¸€çº§sramçš„å†™ä½¿èƒ½
+         .next_wr1(next_wr1_ctr),//·¢ËÍ¸øÏÂÒ»¼¶sramµÄĞ´Ê¹ÄÜ
          .next_wr2(next_wr2_ctr),
-         .next_addr(next_addr_ctr),//å‘é€ç»™ä¸‹ä¸€çº§sramçš„åœ°å€ä¿¡å·
-         .weights_addr(weight_addr_ctr),//å‘é€ç»™æƒé‡sramçš„åœ°å€ä¿¡å·
-         .weights_sram_en(weight_en_ctr),//å‘é€ç»™æƒé‡sramçš„ç‰‡é€‰ä¿¡å·
-         .weights_sram_rd(weight_rd_ctr),//å‘é€ç»™æƒé‡sramçš„è¯»ä½¿èƒ½ä¿¡å·
+         .next_addr(next_addr_ctr),//·¢ËÍ¸øÏÂÒ»¼¶sramµÄµØÖ·ĞÅºÅ
+         .weights_addr(weight_addr_ctr),//·¢ËÍ¸øÈ¨ÖØsramµÄµØÖ·ĞÅºÅ
+         .weights_sram_en(weight_en_ctr),//·¢ËÍ¸øÈ¨ÖØsramµÄÆ¬Ñ¡ĞÅºÅ
+         .weights_sram_rd(weight_rd_ctr),//·¢ËÍ¸øÈ¨ÖØsramµÄ¶ÁÊ¹ÄÜĞÅºÅ
          .img_request1(img_request1),
          .img_request2(img_request2),
          .calculate_en(calculate_en),
          .asm_send(asm_send),
          .next_sram_full1(next_sram_full1),
          .next_sram_full2(next_sram_full2),
-         .bn_addr(bn_addr_ctr),//å‘é€ç»™bn sramçš„åœ°å€
-         .bn_rd(bn_rd_ctr),//å‘é€ç»™bn sramçš„è¯»ä½¿èƒ½sram
-         .bn_en(bn_en_ctr),//å‘é€ç»™bn sramçš„ç‰‡é€‰ä¿¡å·
+         .bn_addr(bn_addr_ctr),//·¢ËÍ¸øbn sramµÄµØÖ·
+         .bn_rd(bn_rd_ctr),//·¢ËÍ¸øbn sramµÄ¶ÁÊ¹ÄÜsram
+         .bn_en(bn_en_ctr),//·¢ËÍ¸øbn sramµÄÆ¬Ñ¡ĞÅºÅ
          .asm_choose(asm_choose)
     );
 
 layer1_asm_top LAYER1_ASM_TOP(
 //INPUT
-.data_weight1(data1),
-.data_weight2(data2),
-.data_weight3(data3),
-.data_weight4(data4),
-.data_weight5(data5),
-.data_weight6(data6),
-.data_weight7(data7),
-.data_weight8(data8),
+.data_weight1(weight[0]),
+.data_weight2(weight[1]),
+.data_weight3(weight[2]),
+.data_weight4(weight[3]),
+.data_weight5(weight[4]),
+.data_weight6(weight[5]),
+.data_weight7(weight[6]),
+.data_weight8(weight[7]),
 .data_pix(dout),
-.data_bn(data9),
+.data_bn(bn),
 .clk(clk),
 .rst(rst),
 .asm_send(asm_send),
