@@ -58,7 +58,7 @@ next_data_offm
 parameter img_width = 16;
 parameter bn_width = 16;
 parameter pre_addr_width = 10;
-parameter next_addr_width = 14;
+parameter next_addr_width = 13;
 parameter weight_addr_width = 9;
 parameter bn_addr_width = 7;
 parameter asm_number = 8;
@@ -71,7 +71,7 @@ input [pre_addr_width-1:0] pre_addr_offm;
 input next_rd1_offm,next_rd2_offm;
 input next_en1_offm,next_en2_offm;
 input [next_addr_width-1:0] next_addr_offm;
-output [15:0]next_data_offm;//next sram中的数是8个8个存的，所以是8位
+output [15:0]next_data_offm;//next sram中的数是2个8个存的，所以是16位
 
 input pre_sram_full1;//前后发送过来的握手信号
 input pre_sram_full2;
@@ -105,7 +105,7 @@ wire [9:0] pre_addr_ctr;
 wire [img_width-1:0] din;
 wire [img_width-1:0] dout;
 wire next_en1_ctr,next_en2_ctr,next_wr1_ctr,next_wr2_ctr;
-wire [13:0] next_addr_ctr;
+wire [12:0] next_addr_ctr;
 wire [8:0] weight_addr_ctr;
 wire weight_en_ctr,weight_rd_ctr;
 wire calculate_en;
