@@ -41,7 +41,7 @@ parameter CALCULATE1 = 4'b0001,CALCULATE2 = 4'b0010,CALCULATE3 = 4'b0100,CALCULA
 parameter result_width = 11;
 
 
-input  data_pix;
+input [1:0] data_pix;
 input data_weight;
 input [bn_width-1:0] data_bn;
 input asm_change;
@@ -186,6 +186,6 @@ begin
                  end
         end
 end
-assign result = (data_weight^data_pix) ? 1:-1;
+assign result = (data_pix==2'b10)?0:((data_weight^data_pix[0]==1)?  -1 :1);
 assign data_out = (result4>=result5) ? ((result4 > bn_coefficient)?1:0) : ((result5 > bn_coefficient)?1:0);
 endmodule

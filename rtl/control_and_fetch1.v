@@ -220,8 +220,8 @@ begin//xxxx
              pre_addr_buffer<=0;
              next_sram_en2<=1'b1;next_sram_en1<=1;
              next_wr2<=1'b1;next_wr1<=1;
-             next_addr<=14'b0;  
-             weights_addr<=9'b0;
+             next_addr<=0;  
+             weights_addr<=0;
              weights_sram_en<=1;
              weights_sram_rd<=1;
              lock<=0;

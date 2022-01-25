@@ -44,7 +44,7 @@ data_out
     );
 input [63:0] asm_choose;
 input [63:0] asm_change;
-input data_pix1,data_pix2,data_pix3,data_pix4,data_pix5,data_pix6,data_pix7,data_pix8;
+input [1:0]  data_pix1,data_pix2,data_pix3,data_pix4,data_pix5,data_pix6,data_pix7,data_pix8;
 input [63:0] data_weight;
 input [15:0] data_bn;
 input [7:0] calculate_en;
